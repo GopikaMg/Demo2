@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if catagory %}
+        {{catagory.desc| truncatewords:155}}
+    {% else %}
+        Welcome to Bliss Attire, where you become your stylist
+    {% endif%}
+{% endblock %}
+
+{% block title %}
+    {% if catagory %}
+        {{catagory.name}} - Bliss Attire
+    {% else %}
+        New Collections!!!!
+    {% endif%}
+{% endblock %}
+
+{% block content %}
+{% if catagory %}
+
+<div>
+    <div class="row my_row_class">
+        <div class="mx-auto">
+        <p><a href="{% url 'shop:allCat' %}"> Products </a></p>
+    </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="mx-auto">
+  {% if catagory %}
+    <img  class="my_image"  src="{{catagory.image.url}}" alt="{{catagory.name}}">
+    </div>
+<br>
+<div>
+    <h1 class="text-center my-title" >{{catagory.name}}</h1>
+    <p class="text-justify">{{catagory.desc}}</p>
+</div>
+    {% else %}
+<div >
+    <div>
+<img src="{% static 'img/banner.png' %}" width="1250px;"  height="450px;" alt="Our Collections.....">
+    </div>
+</div>
+<br>
+<div>
+    <h1 class="text-center my-title">Our Journey</h1>
+    <p class="text-justify"  style="font-size:16px;">Social media is a collection term for website and application that focus on community based input, interaction content, sharing and collaboration. People use social media to stay in touch and interact with friends, family and various communities. Nowadays, in social media everyone uses Facebook, Instagram, YouTube, Twitter etc. to communication with people and to share things with their friends. There are lots of positive and negative users of social media. In our daily life the positive use can lead people to productive use of time, peace of mind and happiness, healthy conversation in which people like and enjoy by sharing personal and professional activities with a wide variety of peer groups and communities
+    </p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx-auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9  col-sm-12 col-md-4  col-lg-4">
+            <div class="card text-center" style="width: 15rem" >
+                <a href="{{product.get_url}}"> <img class="card-img-top my_image" style="width: 238px; height: 300px;" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>Rs {{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+
+        {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+
+
+{% endblock %}
